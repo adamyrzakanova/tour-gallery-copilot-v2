@@ -84,3 +84,19 @@ const handleRemoveTour = (id) => {
   setTours(newTours);
 };
 
+return (
+  <div className="App">
+    {loading ? (
+      <h1>Loading...</h1>
+    ) : error ? (
+      <h1>{error}</h1>
+    ) : tours.length === 0 ? (
+      <div>
+        <h2>No Tours Left</h2>
+        <button onClick={fetchTours}>Refresh</button>
+      </div>
+    ) : (
+      <Gallery tours={tours} onRemoveTour={handleRemoveTour} />
+    )}
+  </div>
+);
