@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import Gallery from './components/Gallery'; // Make sure Gallery is imported!
 
 function App() {
   const [tours, setTours] = useState([]);
@@ -29,6 +30,11 @@ function App() {
     fetchTours();
   }, []);
 
+  const handleRemoveTour = (id) => {
+    const newTours = tours.filter((tour) => tour.id !== id);
+    setTours(newTours);
+  };
+
   if (loading) {
     return <h2>Loading...</h2>;
   }
@@ -38,7 +44,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="App">
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -50,53 +56,20 @@ function App() {
       <h1>Vite + React</h1>
       <div className="card">
         <h2>Tours</h2>
-        {tours.map((tour) => (
-          <div key={tour.id}>
-            <h3>{tour.name}</h3>
-            <p>{tour.info}</p>
-            <p>Price: ${tour.price}</p>
+        {tours.length === 0 ? (
+          <div>
+            <h2>No Tours Left</h2>
+            <button onClick={() => fetchTours()}>Refresh</button>
           </div>
-        ))}
+        ) : (
+          <Gallery tours={tours} onRemoveTour={handleRemoveTour} />
+        )}
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-    </>
+    </div>
   );
 }
 
 export default App;
-
-return (
-  <div className="App">
-    {loading ? (
-      <h1>Loading...</h1>
-    ) : error ? (
-      <h1>{error}</h1>
-    ) : (
-      <Gallery tours={tours} onRemoveTour={handleRemoveTour} />
-    )}
-  </div>
-);
-
-const handleRemoveTour = (id) => {
-  const newTours = tours.filter((tour) => tour.id !== id);
-  setTours(newTours);
-};
-
-return (
-  <div className="App">
-    {loading ? (
-      <h1>Loading...</h1>
-    ) : error ? (
-      <h1>{error}</h1>
-    ) : tours.length === 0 ? (
-      <div>
-        <h2>No Tours Left</h2>
-        <button onClick={fetchTours}>Refresh</button>
-      </div>
-    ) : (
-      <Gallery tours={tours} onRemoveTour={handleRemoveTour} />
-    )}
-  </div>
-);
