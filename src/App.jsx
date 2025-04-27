@@ -66,3 +66,21 @@ function App() {
 }
 
 export default App;
+
+return (
+  <div className="App">
+    {loading ? (
+      <h1>Loading...</h1>
+    ) : error ? (
+      <h1>{error}</h1>
+    ) : (
+      <Gallery tours={tours} onRemoveTour={handleRemoveTour} />
+    )}
+  </div>
+);
+
+const handleRemoveTour = (id) => {
+  const newTours = tours.filter((tour) => tour.id !== id);
+  setTours(newTours);
+};
+
